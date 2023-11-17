@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
@@ -64,7 +64,7 @@
 		<PackageReference Include="Dapper" Version="*" />
 		<PackageReference Include="Slapper.AutoMapper" Version="2.0.5" targetFramework="$(TargetFramework)" />
 		<PackageReference Include="System.Data.Common" Version="4.3.0" />
-		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.120" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.180" />
 		<PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
 	</ItemGroup>
 
