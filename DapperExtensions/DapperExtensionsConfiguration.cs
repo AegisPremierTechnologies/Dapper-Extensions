@@ -50,12 +50,23 @@ namespace DapperExtensions
 
         public IClassMapper GetMap(Type entityType)
         {
+            var mapType = default(Type);
+
             if (!_classMaps.TryGetValue(entityType, out IClassMapper map))
             {
-                var mapType = GetMapType(entityType) ?? DefaultMapper.MakeGenericType(entityType);
+                mapType = GetMapType(entityType) ?? DefaultMapper.MakeGenericType(entityType);
 
-                map = Activator.CreateInstance(mapType) as IClassMapper;
-                _classMaps[entityType] = map;
+                try
+                {
+                    map = (IClassMapper)Activator.CreateInstance(mapType);
+
+                    _classMaps[entityType] = map;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Could not find a class map for entity: {entityType}, mapType: {mapType}, message: {ex.Message}", ex);
+                }
             }
 
             return map;
