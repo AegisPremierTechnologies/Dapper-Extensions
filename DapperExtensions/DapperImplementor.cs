@@ -697,13 +697,24 @@ namespace DapperExtensions
 
                 dynamicParameters = GetDynamicParameters(entity, dynamicParameters, keyColumn, true);
 
-                if (triggerIdentityColumn != null)
+                //-- Previous Implementation
+                /*if (triggerIdentityColumn != null)
                 {
                     keyValue = InsertTriggered(connection, entity, transaction, commandTimeout, sql, triggerIdentityColumn, dynamicParameters);
                 }
                 else
                 {
                     keyValue = InsertIdentity(connection, transaction, commandTimeout, classMap, sql, dynamicParameters);
+                }*/
+
+                //-- Based on Comments in Error Report on GitHub, this fixes the Int64 to Int32 conversion error --
+                if (triggerIdentityColumn != null)
+                {
+                    keyValue = Convert.ChangeType(InsertTriggered(connection, entity, transaction, commandTimeout, sql, triggerIdentityColumn, dynamicParameters), keyColumn.MemberType);
+                }
+                else
+                {
+                    keyValue = Convert.ChangeType(InsertIdentity(connection, transaction, commandTimeout, classMap, sql, dynamicParameters), keyColumn.MemberType);
                 }
 
                 keyValues.Add(keyColumn.Name, keyValue);
