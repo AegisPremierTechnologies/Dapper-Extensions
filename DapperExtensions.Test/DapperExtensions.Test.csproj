@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net461;net5.0</TargetFrameworks>
@@ -44,7 +44,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' != 'net461'">
-		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.110" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.180" />
 		<PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
 		<PackageReference Include="System.Data.SQLite.Core" version="1.0.113.7" />
 		<PackageReference Include="IBM.Data.DB2.Core" Version="2.2.0.100" />
