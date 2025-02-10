@@ -42,12 +42,17 @@ namespace DapperExtensions
             Dialect = sqlDialect;
         }
 
+        /*-- Properties --*/
+
         public Type DefaultMapper { get; }
         public IList<Assembly> MappingAssemblies { get; }
         public ISqlDialect Dialect { get; }
 
         public bool CaseSensitiveSearchEnabled { get; private set; } = false;
 
+        /*-- Methods --*/
+
+        #region -- GetMap(Type) Method --
         public IClassMapper GetMap(Type entityType)
         {
             var mapType = default(Type);
@@ -71,34 +76,47 @@ namespace DapperExtensions
 
             return map;
         }
+        #endregion
 
+        #region -- GetMap<T>() Method --
         public IClassMapper GetMap<T>()
         {
             return GetMap(typeof(T));
         }
+        #endregion
 
+        #region -- ClearCache() Method --
         [ExcludeFromCodeCoverage]
         public void ClearCache()
         {
             _classMaps.Clear();
         }
+        #endregion
 
+        #region -- GetNextGuid() Method --
         public Guid GetNextGuid()
         {
             var b = Guid.NewGuid().ToByteArray();
             var dateTime = new DateTime(1900, 1, 1);
             var now = DateTime.Now;
+
             var timeSpan = new TimeSpan(now.Ticks - dateTime.Ticks);
             var timeOfDay = now.TimeOfDay;
+
             var bytes1 = BitConverter.GetBytes(timeSpan.Days);
             var bytes2 = BitConverter.GetBytes((long)(timeOfDay.TotalMilliseconds / 3.333333));
+
             Array.Reverse(bytes1);
             Array.Reverse(bytes2);
+
             Array.Copy(bytes1, bytes1.Length - 2, b, b.Length - 6, 2);
             Array.Copy(bytes2, bytes2.Length - 4, b, b.Length - 4, 4);
+
             return new Guid(b);
         }
+        #endregion
 
+        #region -- GetMapType(Type) Method --
         public virtual Type GetMapType(Type entityType)
         {
             Type getType(Assembly a)
@@ -127,7 +145,9 @@ namespace DapperExtensions
 
             return result ?? getType(entityType.Assembly);
         }
+        #endregion
 
+        #region -- GetOrSetSqlInjection(Type, SqlInjection) Method --
         public SqlInjection GetOrSetSqlInjection(Type entityType, SqlInjection sqlInjection = null)
         {
             if (!_sqlInjections.TryGetValue(entityType, out SqlInjection value) && sqlInjection != null)
@@ -135,8 +155,10 @@ namespace DapperExtensions
                 value = sqlInjection;
                 _sqlInjections[entityType] = value;
             }
+
             return value;
         }
+        #endregion
 
         public void SetCaseSensitiveSearch(bool value) => CaseSensitiveSearchEnabled = value;
     }
